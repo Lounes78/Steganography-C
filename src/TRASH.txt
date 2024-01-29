@@ -1,0 +1,153 @@
+NEXT STEP:
+	Codae des Fichies Binaires 
+	Optimisation de la Capacité
+
+
+	// on vérifie que l image est bien encodée
+
+    // int rot = 0;
+    // for (int i = 0; i < secret_image->height; i++) 
+	// {
+    // 	for (int j = 0; j < secret_image->width; j++) 
+	// 	{
+    //         unsigned char grayscale_value = secret_image->data[i][j];
+
+    //         for (int k = 7; k >= 0; k--) 
+    //         {
+    //             unsigned char bit = ((grayscale_value >> k) & 1); 
+    //             int index = (i*secret_image->width + j + (7-k) + rot);
+    //             secret_stream->data[index] = bit;
+
+	// 			printf("%d ", secret_stream->data[index]);
+	// 		}
+	// 		printf(" %d\n ", secret_image->data[i][j]);
+    //         rot = rot + 7;
+    // 	}
+	// }
+
+
+
+
+
+	// for (int i = 0; i < secret_image->height; i++) 
+	// {
+    // 	for (int j = 0; j < secret_image->width; j++) 
+	// 	{
+	// 		printf("%d ", secret_image->data[i][j]);
+	// 	}
+	// 	printf("\n \n");
+	// }
+
+	// printf("\n \n \n \n  \n \n \n \n \n ");
+
+	// for (int i = 0; i < 8*size_imageSecret; i++) 
+	// {
+	// 	printf("%d ", secret_stream->data[i]);
+	// }
+
+
+
+
+Mais pour passer des tabs 2d a un tab 1d pas besoin de trucs aussi compliqué !! just append at the end 
+
+
+
+   // unsigned char decoat[((coded->height)/8)+1][((coded->width)/8)+1];
+    // int rot=0;
+    
+    // for (int i = 0; i < coded->height; i++) 
+	// {
+    // 	for (int j = 0; j < coded->width; j++) 
+	// 	{
+    //     coded->data[i][j]&=1;
+            
+    //     }        
+    // }
+    // for (int i = 0; i < coded->height; i++) 
+	// {
+    // 	for (int j = 0; j < coded->width; j++) 
+	// 	{int k=0; k<8;k++)
+    //     {
+    //     decoat[i][j]+=pow(10,8-k)*i+rotk+j+rot;
+            
+    //     }   
+    //     rot+=7;     
+    // }
+
+
+
+1. double boucle sur tous les pixels de l'image secrete
+2. Pour chaque Pixel on recupere ses bits dans secretStream
+3. On code ce pixel dans 8 pixels de l'image hote
+
+Remarques:
+1. Checker si la taille de l'hôte est suffisante
+2. Longueur et largeur de l'image hôte et l'image secrete not the same
+
+
+En multipliant le numéro de ligne i par le nombre total de colonnes (host_image->width), vous obtenez une sorte de "déplacement" vers le début de la ligne dans le tableau unidimensionnel. Ensuite, en ajoutant l'indice de la colonne j, vous vous déplacez à la position spécifique de l'élément dans cette ligne.
+
+
+
+#include "pngwrap.h"
+#include <stdio.h>
+
+
+int main()
+{
+  bwimage_t *image;
+  error_e retval = E3A_OK;
+
+  image = E3ACreateImage();
+
+  printf("%dx%d\n", image->width, image->height);
+
+  retval = E3ALoadImage("lena.png", image);
+
+  printf("%dx%d\n", image->width, image->height);
+
+
+  // unsigned int i, j;
+  // for(i=0; i<image->height; i++)
+  // {
+  //     for(j=0; j<image->width; j++)
+  //     {
+  //       image->data[i][j]=0xff-image->data[i][j];
+  //     }
+  // }
+  
+  // retval=E3ADumpImage("negative.png", image);
+ 
+
+  // do{
+  //   unsigned int i, j;
+  //   if(E3A_OK != (retval=E3ALoadImage("../lena.png", image))) break;
+  //   /* Just to do something - create a negative */
+  //   for(i=0; i<image->height; i++){
+  //     for(j=0; j<image->width; j++){
+  //       image->data[i][j]=0xff-image->data[i][j];
+  //     }
+  //   }
+  //   if(E3A_OK != (retval=E3ADumpImage("negative.png", image))) break;
+  //   printf("%dx%d\n", image->width, image->height);
+  // }while(0);
+
+  // switch(retval){
+  // case E3A_OK:
+  //   break;
+  // case E3A_ENOFILE:
+  //   fprintf(stderr, "Cannot open file\n");
+  //   break;
+  // case E3A_EPNGLIB:
+  //   fprintf(stderr, "Internal error of libpng\n");
+  //   break;
+  // case E3A_ENOMEM:
+  //   fprintf(stderr, "Cannot allocate memory\n");
+  //   break;
+  // default:
+  //   ;/* Can't happen */
+  // }
+  //  E3AFreeImage(image);
+
+  return 0;
+}
