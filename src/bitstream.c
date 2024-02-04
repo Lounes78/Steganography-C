@@ -77,20 +77,22 @@ void PrepSecImg(bwimage_t* secret_image, bitstream* of_secret)
 
 
 // Actually coding it
-void lsb(unsigned char* pixel, bitstream* of_secret)
+void Lsb(unsigned char* pixel, bitstream* of_secret)
 {
-    if (of_secret->position < of_secret->size)
+    if (of_secret->position < of_secret->size) //En gros une fois on a encodé tous les pixels de l image secrete on ne fait plus rien aux autres pixels de l image hote 
     {
         unsigned char bit = of_secret->data[of_secret->position];
         //printf("%d with %d ", *pixel, bit);
 
         *pixel &= 0b11111110; //he was not right
         *pixel |= bit;
-
-        of_secret->position++;
         //printf("%d at %d \n", *pixel, of_secret->position -1);
-    }        
+        of_secret->position++;
+    }
 }
+
+
+
 
 void HeDoesTheJob(bwimage_t* host_image, bitstream* of_secret)
 { 
@@ -98,7 +100,7 @@ void HeDoesTheJob(bwimage_t* host_image, bitstream* of_secret)
 	{
     	for (int j = 0; j < host_image->width; j++) 
 		{
-            lsb(&host_image->data[i][j], of_secret);
+            Lsb(&host_image->data[i][j], of_secret);
         }        
     }
 }
@@ -108,13 +110,12 @@ void HeDoesTheJob(bwimage_t* host_image, bitstream* of_secret)
 
 
 
-
 // Decoding part
-unsigned char binaryToDecimal(char bitSequence[8]) 
+unsigned char binaryToDecimal(char bitSequence[], int size) 
 {
     unsigned char decimalValue = 0;
 
-    for (int i = 0; i < 8; i++) 
+    for (int i = 0; i < size; i++) 
     {
         decimalValue = (decimalValue << 1) | bitSequence[i];
     }
@@ -141,12 +142,12 @@ void ReverseEngineerTheJob(bwimage_t* coded, bwimage_t* decoded_image)
                 if (ii == decoded_image->height) // job effectue
                     goto exitLoops;
 
-                decoded_image->data[ii][jj++] = binaryToDecimal(bitSequence); 
+                decoded_image->data[ii][jj++] = binaryToDecimal(bitSequence, 8); 
                 a = 0;
 
                 if (jj < decoded_image->width)
                 {
-                    decoded_image->data[ii][jj] = binaryToDecimal(bitSequence);
+                    decoded_image->data[ii][jj] = binaryToDecimal(bitSequence, 8);
                 }
 
                 else
@@ -191,3 +192,31 @@ int CanIHandleIt(bwimage_t* host_image, bwimage_t* secret_image)
     }
 
 }
+
+
+/*      OPTIMISATION        */
+// Deterministic Scattering
+
+// void HeDoesTheJobWithScattering(bwimage_t* host_image, bitstream* of_secret)
+// {
+//     int ii = 0; jj = 0;
+//     for (int i = 0; i < host_image->height; i++) 
+// 	{
+//     	for (int j = 0; j < host_image->width; j++) 
+// 		{           
+//             if (of_secret->position < of_secret->size) //En gros une fois on a encodé tous les pixels de l image secrete on ne fait plus rien aux autres pixels de l image hote 
+//             {
+//                 ii = DeterministicDispersion(i, host_image);
+//                 jj = DeterministicDispersion(j, host_image);
+//                 Lsb(&host_image->data[ii][jj], of_secret);
+//                 of_secret->position++;
+//             }            
+//         }
+//    }
+// }
+
+
+// int DeterministicDispersion(int a, bwimage_t* host_image)
+// {
+
+// }

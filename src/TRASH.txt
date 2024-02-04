@@ -1,6 +1,7 @@
 NEXT STEP:
 	Codae des Fichies Binaires 
-	Optimisation de la Capacité
+	Optimisation de la Capacité   (Pour optimiser encore plus ce qu il y a à faire c de n alterer que le nombre necessare de pixel pas plus) || en vrai c ce qu on fait dagi psq OUI T AS COMPRIS 
+	Eparpillation du codage
 
 
 	// on vérifie que l image est bien encodée

@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 	secret_image = E3ACreateImage();
 	
 	retval_host = E3ALoadImage("../img/tree3.png", host_image);
-	retval_secret = E3ALoadImage("../img/saturne.png", secret_image);
+	retval_secret = E3ALoadImage("../img/lena.png", secret_image);
 
 
 	CanIHandleIt(host_image, secret_image);

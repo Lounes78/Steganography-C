@@ -20,12 +20,12 @@ void FreeBitstream();
 void PrepSecImg(bwimage_t* secret_image, bitstream* of_secret);
 
 // Coding it
-void lsb(unsigned char* pixel, bitstream* of_secret);
+void Lsb(unsigned char* pixel, bitstream* of_secret);
 void HeDoesTheJob(bwimage_t* host_image, bitstream* of_secret);
 
 
 // Decoding it
-unsigned char binaryToDecimal(char bitSequence[8]);
+unsigned char binaryToDecimal(char bitSequence[], int size);
 void ReverseEngineerTheJob(bwimage_t* coded, bwimage_t* decoded_image);
 
 
