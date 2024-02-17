@@ -1,0 +1,5 @@
+CRC : 1
+Taille du nom de Ficheir (en caracteres) : 16
+Taille de données (en caracteres) : 32
+Nom du fichier: ../txt/test1.txt
+Ok je mets de la data dagi ! :) 
