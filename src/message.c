@@ -1,15 +1,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "pngwrap.h"
 #include "message.h"
 
 
-/*
-l'émetteur du message calcule une valeur "CheckSum" qui est fonction du contenu du message, puis l'ajoute à la fin du message.
-Le récepteur fait le même calcul, et contôle que le "CheckSum" a la même valeur que celui de l'émetteur.
-*/
 
+int binaryToDecimal_bis(char *binary, int size) {
+    int decimal = 0;
+    int power = 0;
+
+    for (int i = size - 1; i >= 0; i--) {
+        if (binary[i] == 1) {
+            decimal += pow(2, power);
+        }
+        power++;
+    }
+
+    return decimal;
+}
 
 
 unsigned char binaryToDecimal(char bitSequence[], int size) 
@@ -25,12 +35,9 @@ unsigned char binaryToDecimal(char bitSequence[], int size)
 
 
 
-
-
 unsigned int ComputeCRC(message* m)
 {
     unsigned int crc=0 ;
-    //printf("size_of_data = %d \n", binaryToDecimal(m->size_of_data, 8*sizeof(unsigned char)));
     for(int i = 0 ;i < 24; i++)
     {
         //printf("%d ", m->data[i]);
@@ -64,11 +71,11 @@ message* CreateFromFile(char *filename)
     FILE* file = fopen(filename, "rb");
 
     if (file == NULL)
-        printf("ERREUR !!!\n");
+        printf("ERREUR lors de l'ouverture du fichier\n");
 
 
 
-  //  --- file name --- Encoding
+    //  --- file name --- Encoding
     createdmessage->filename = (char*)malloc(8*strlen(filename));
 
     int index = 0;
@@ -78,10 +85,7 @@ message* CreateFromFile(char *filename)
         for(int j=7; j>=0; j--)
         {
             createdmessage->filename[index++] = (filename[i]>>j) & 1; 
-//                printf("%d", createdmessage->filename[index-1]);
         }
-        
-//                printf("\n");
     }
 
 
@@ -119,12 +123,7 @@ message* CreateFromFile(char *filename)
     createdmessage->crc = (unsigned char*) malloc(8*sizeof(unsigned int));
     
     unsigned int crc = ComputeCRC(createdmessage);
-    //printf("\nCRC = %d  \n", crc);
     DecimalToBinary(crc, createdmessage->crc);
-
-    // for (int i = 0; i < 32; i++)
-    //     printf("%d ", createdmessage->crc[i]);
-
 
     fclose(file);
     return createdmessage; 
@@ -141,61 +140,44 @@ void LsbTxt(unsigned char* pixel, message* secret_message, int index)
     // CRC Encoding
     if (index < 8*sizeof(unsigned int))
     {
-//        printf("Encoding CRC\n");
         bit = secret_message->crc[index];
     }
-
-
 
     // File name SIZE Encoding
     else if (index < 8*(sizeof(unsigned int) + sizeof(unsigned int)))
     {
-//        printf("File Name size Enoding \n");
         bit = secret_message->size_of_filename[index - 8*sizeof(unsigned int)];
     }
-
-
-
-
 
     // Data SIZE Encoding
     else if (index < 8*(sizeof(unsigned int) + sizeof(unsigned int) + sizeof(unsigned int)))
     {
-//        printf("Data size Encoding\n");
         bit = secret_message->size_of_data[index - 8*2*sizeof(unsigned int)];
     }
 
-
-
-
-
     // file name Encoding
-    else if (index < 8*(binaryToDecimal(secret_message->size_of_filename, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int)))
+    else if (index < 8*(binaryToDecimal_bis(secret_message->size_of_filename, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int)))
     {
-//        printf("File name Encoding\n");
         bit = secret_message->filename[index - 8*3*sizeof(unsigned int)];
     }
 
-
-
-
     // data encoding
-    else if (index < 8*(binaryToDecimal(secret_message->size_of_filename, 8*sizeof(unsigned int)) + binaryToDecimal(secret_message->size_of_data, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int))) 
+    else if (index < 8*(binaryToDecimal_bis(secret_message->size_of_filename, 8*sizeof(unsigned int)) + binaryToDecimal_bis(secret_message->size_of_data, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int))) 
     {
-//        printf("Data Encoding\n");
         bit = secret_message->data[index - 8*(binaryToDecimal(secret_message->size_of_filename, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int))];
     }
 
-    
-    if (index < 8*(binaryToDecimal(secret_message->size_of_filename, 8*sizeof(unsigned int)) + binaryToDecimal(secret_message->size_of_data, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int)))
+
+
+
+  if (index < 8*(binaryToDecimal_bis(secret_message->size_of_filename, 8*sizeof(unsigned int)) + binaryToDecimal_bis(secret_message->size_of_data, 8*sizeof(unsigned int)) + 3*sizeof(unsigned int))) 
     {
-//        printf("%d with %d ", *pixel, bit);
-
-        *pixel &= 0b11111110; //he was not right
+        *pixel &= 0b11111110; 
         *pixel |= bit;
-
-//        printf("%d at %d \n", *pixel, index);
     }
+
+
+  
 }
 
 
@@ -221,7 +203,7 @@ void HeDoesTheJob_Txt(bwimage_t* host_image, message* secret_message)
 // Decoding from the Image
 void ReverseEngineerTheJob_Txt(bwimage_t* coded)
 {
-    FILE* decfile = fopen("../txt/decoded.txt", "wb");
+    FILE* decfile = fopen("decoded.txt", "wb");
     int a = 0, separator = 0;
     unsigned char bitSequence[32] = {0};
 
@@ -235,24 +217,22 @@ void ReverseEngineerTheJob_Txt(bwimage_t* coded)
             bitSequence[a] = coded->data[i][j] & 1;
             a++;
 
-
             // Metadata decoding    
             if (a == 32 && separator < 3) // Generation d'un pixel décodé
             {
                 a = 0;
-                
                 if (separator == 0) // Write CRC
                 {
-                    fprintf(decfile, "CRC : %d\n", binaryToDecimal(bitSequence, 32));
+                    fprintf(decfile, "CRC : %d\n", binaryToDecimal_bis(bitSequence, 32));
                 }
                 else if (separator == 1) // Write File name size
                 {
-                    fnsize = binaryToDecimal(bitSequence, 32);
-                    fprintf(decfile, "Taille du nom de Ficheir (en caracteres) : %d\n", fnsize); // Each \n is 2 caracters    
+                    fnsize = binaryToDecimal_bis(bitSequence, 32);
+                    fprintf(decfile, "Taille du nom de Fichier (en caracteres) : %d\n", fnsize); // Each \n is 2 caracters    
                 }
                 else if (separator == 2) // Write Data Size
                 {
-                    dsize = binaryToDecimal(bitSequence, 32) ;
+                    dsize = binaryToDecimal_bis(bitSequence, 32);
                     fprintf(decfile, "Taille de données (en caracteres) : %d\n", dsize);
                 }
                 separator++;

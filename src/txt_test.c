@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	retval_host = E3ALoadImage("../img/lena.png", host_image);
     
     // 
-    message* secret_message = CreateFromFile("../txt/test1.txt");    
+    message* secret_message = CreateFromFile("../txt/test1.txt");   
 	
     // Encoding the data in host Image
     printf("Encoding the message in the Host Image...\n");

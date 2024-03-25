@@ -57,8 +57,8 @@ extern "C"
   error_e E3AFreeImage(bwimage_t *image);
 
 
-  bwimage_t* CreateEmptyImageLike(bwimage_t* referenceImage);
-
+  bwimage_t* CreateEmptyImageLike(unsigned int height, unsigned int width);
+  rgba_image_t* CreateEmptyImageLike_RGBA(unsigned int height, unsigned int width);
 
 #ifdef __cplusplus
 }

@@ -1,0 +1,30 @@
+CRC : 0
+Taille du nom de Fichier (en caracteres) : 16
+Taille de données (en caracteres) : 2798
+Nom du fichier: ..\txt\test1.txt
+Objet : Candidature pour l'admission en Master Automatique, robotique – Systèmes avancés et
+robotique
+Monsieur,
+Actuellement en troisième année de licence Électronique, Énergie électrique, Automatique (E3A) à l’université Paris-Saclay, je suis animé par une profonde envie de poursuivre mes études dans les domaines des systèmes intelligents et de la robotique. C'est avec un grand plaisir que je vous soumets ma candidature pour intégrer votre master.
+Passionné par les Sciences et Techniques depuis mon plus jeune âge, j'ai toujours considéré mes études comme une source de plaisir plutôt que comme une charge. Mon intérêt pour le fonctionnement des machines et des gadgets m'a poussé à lire des livres tels que "La Radio ?... Mais C’est très Facile" d'Eugène Aisberg et les écrits de Francis Thobois sur la radiocommande, ainsi que des cours en ligne sur la programmation en C.
+Mes deux années de classes préparatoires m'ont permis de développer une rigueur et une structure
+qui m'ont aidé à mieux performer dans un large éventail d'activités. J'ai appris à apprendre, à gérer
+mon stress et à être plus efficace et rapide. J'ai également acquis des compétences scientifiques et
+techniques solides, notamment en mathématiques et en physique.
+Après avoir réussi le Concours National d’Accès aux Grandes Écoles d’Ingénieurs (classé 29ème
+sur 1576 candidats), j'ai intégré le département d’électronique de l’École Polytechnique d’Alger où
+j'ai effectué une année en cycle ingénieur en électronique. J'ai eu l'occasion de travailler sur des
+projets intéressants tels que l'implémentation de l'algorithme cordic en vhdl sur FPGA et d'autres
+projets en C/C++ et Python.
+Je suis particulièrement attiré par les opportunités offertes dans les domaines qui sont à la croisée
+de l'IA et de l'informatique embarquée. Ainsi un master automatique et robotique parcours SAR
+m’enthousiasme au plus haut point. Ce dynamisme est manifeste dans la multitude de projets qui
+émergent dans ce domaine. Pas plus tard qu’hier, le projet GROOT de chez Nvidia a vu le jour,
+visant à créer un modèle de base à usage général pour l’apprentissage des robots. Durant le mois de
+février, par exemple, des startups telles que Figure en collaboration avec OpenAI ont annoncé une
+levée de fonds de 675 millions de dollars pour une valorisation de 2,6 milliards de dollars.
+Le parcours SAR me fournirait les compétences nécessaires pour éventuellement apporter ma
+modeste contribution aux avancées très prometteuses des technologies axées vers l’IA.
+Dans l'attente de l'opportunité de discuter de ma candidature avec vous, je vous prie d'agréer mes
+salutations les plus distinguées.
+Benali Lounes

@@ -18,12 +18,14 @@ void FreeBitstream(); //fait
 
 // Preprocessing of the secret data
 void PrepSecImg(bwimage_t* secret_image, bitstream* of_secret, unsigned int seed); //fait
+void PrepSecImg_RGB(rgba_image_t* secret_image, bitstream* of_secret, unsigned int seed);
 
 // Coding it
 void Lsb(unsigned char* pixel, bitstream* of_secret); //fait
-void HeDoesTheJob(bwimage_t* host_image, bitstream* of_secret); //fait
+void HeDoesTheJob(rgba_image_t* host_image, bitstream* of_secret); //fait
 
 // Randomisation
+void HeDoesTheJob_RGBA_Rand(rgba_image_t* host_image, bitstream* of_secret, int seed); //fait
 void HeDoesTheJob_Rand(bwimage_t* host_image, bitstream* of_secret, int seed); //fait
 
 
@@ -32,12 +34,15 @@ void HeDoesTheJob_Rand(bwimage_t* host_image, bitstream* of_secret, int seed); /
 unsigned char binaryToDecimal(char bitSequence[], int size); //fait
 void DecimalToBinary(unsigned int crc, unsigned char src_bin[]); //fait
 
-void ReverseEngineerTheJob(bwimage_t* coded, bwimage_t* decoded_image); //fait
-void ReverseEngineerTheJob_Rand(bwimage_t* coded, bwimage_t* decoded_image, unsigned int seed);
+void ReverseEngineerTheJob(rgba_image_t* coded, rgba_image_t* decoded_image); //fait
+
+void ReverseEngineerTheJob_Rand(bwimage_t* coded, unsigned int seed);
+void ReverseEngineerTheJob_RGBA_Rand(rgba_image_t* coded, unsigned int seed);
 
 
 // Sufficient Size 
-int CanIHandleIt(bwimage_t* host_image, bwimage_t* secret_image); //fait
+int CanIHandleItRGBA(rgba_image_t* host_image, rgba_image_t* secret_image); //fait
+int CanIHandleIt(bwimage_t* host_image, bwimage_t* secret_image);
 
 
 #endif//__BITSTREAM_H__

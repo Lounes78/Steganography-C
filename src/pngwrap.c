@@ -234,13 +234,50 @@ error_e E3ADumpImage(const char *outfile_path, const bwimage_t *image){
 }
 
 
-bwimage_t* CreateEmptyImageLike(bwimage_t* referenceImage) {
+
+rgba_image_t* CreateEmptyImageLike_RGBA(unsigned int height, unsigned int width)
+{
+    rgba_image_t* emptyImage = E3ACreateRGBAImage();
+
+    if (emptyImage != NULL) {
+        // Set the dimensions of the empty image
+        emptyImage->width = width;
+        emptyImage->height = height;
+
+        // Allocate memory for the image data
+        emptyImage->data = (unsigned char**)malloc(emptyImage->height * sizeof(unsigned char*));
+
+        if (emptyImage->data != NULL) {
+            for (unsigned int i = 0; i < emptyImage->height; i++) {
+                emptyImage->data[i] = (unsigned char*)malloc(4*emptyImage->width * sizeof(unsigned char));
+
+                // Initialize the image data to some default value (e.g., 0)
+                for (unsigned int j = 0; j < 4*emptyImage->width; j++) {
+                    emptyImage->data[i][j] = 0;
+                }
+            }
+        } else {
+            // Handle memory allocation failure
+            // Free any allocated memory and set emptyImage to NULL
+            E3AFreeRGBAImage(emptyImage);
+            emptyImage = NULL;
+        }
+    }
+
+    return emptyImage;
+}
+
+
+
+
+bwimage_t* CreateEmptyImageLike(unsigned int height, unsigned int width)
+{
     bwimage_t* emptyImage = E3ACreateImage();
 
     if (emptyImage != NULL) {
         // Set the dimensions of the empty image
-        emptyImage->width = referenceImage->width;
-        emptyImage->height = referenceImage->height;
+        emptyImage->width = width;
+        emptyImage->height = height;
 
         // Allocate memory for the image data
         emptyImage->data = (unsigned char**)malloc(emptyImage->height * sizeof(unsigned char*));
